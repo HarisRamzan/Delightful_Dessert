@@ -1,0 +1,44 @@
+<mat-card class="product-card">
+  <div class="product-image-container" (click)="onViewDetails()">
+    <img 
+      mat-card-image 
+      [src]="product.imageUrl || 'assets/images/placeholder.jpg'" 
+      [alt]="product.name"
+      class="product-image"
+    />
+    <div class="product-badge" *ngIf="product.stock <= 5 && product.stock > 0">
+      <span>Low Stock</span>
+    </div>
+    <div class="product-badge out-of-stock" *ngIf="product.stock === 0">
+      <span>Out of Stock</span>
+    </div>
+  </div>
+
+  <mat-card-content>
+    <h3 class="product-name" (click)="onViewDetails()">{{ product.name }}</h3>
+    <p class="product-category" *ngIf="product.categoryName">
+      {{ product.categoryName }}
+      <span *ngIf="product.subcategoryName"> > {{ product.subcategoryName }}</span>
+    </p>
+    <p class="product-description">{{ product.description | slice:0:80 }}{{ product.description && product.description.length > 80 ? '...' : '' }}</p>
+    
+    <div class="product-footer">
+      <div class="product-price">
+        <span class="price-label">Price:</span>
+        <span class="price-amount">${{ product.price | number:'1.2-2' }}</span>
+      </div>
+
+      <div class="product-actions" *ngIf="showActions">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          (click)="onAddToCart()"
+          [disabled]="product.stock === 0"
+        >
+          <mat-icon>add_shopping_cart</mat-icon>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

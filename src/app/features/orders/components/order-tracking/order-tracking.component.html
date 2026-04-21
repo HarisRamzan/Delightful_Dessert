@@ -1,0 +1,49 @@
+<div class="container tracking-container">
+  <h1 class="page-title">Track Your Order</h1>
+
+  <mat-card class="tracking-form-card">
+    <form [formGroup]="trackingForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="form-field-full-width" appearance="outline">
+        <mat-label>Tracking ID</mat-label>
+        <input matInput formControlName="trackingId" placeholder="Enter your tracking ID">
+        <mat-icon matPrefix>search</mat-icon>
+        <mat-error *ngIf="trackingForm.get('trackingId')?.hasError('required')">
+          Tracking ID is required
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="!trackingForm.valid || (loading$ | async)">
+        <mat-icon>local_shipping</mat-icon>
+        Track Order
+      </button>
+    </form>
+  </mat-card>
+
+  <div *ngIf="loading$ | async" class="loading-spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <mat-card *ngIf="!(loading$ | async) && (order$ | async) as order" class="order-details-card">
+    <h2>Order #{{order.orderNumber}}</h2>
+    <mat-chip [color]="getStatusColor(order.status)">{{order.status}}</mat-chip>
+    
+    <div class="order-info">
+      <p><strong>Tracking ID:</strong> {{order.trackingId}}</p>
+      <p><strong>Order Date:</strong> {{order.createdAt | date:'medium'}}</p>
+      <p><strong>Total Amount:</strong> \${{order.totalAmount | number:'1.2-2'}}</p>
+    </div>
+
+    <h3>Shipping Address</h3>
+    <p>{{order.shippingAddress.fullName}}</p>
+    <p>{{order.shippingAddress.addressLine1}}</p>
+    <p>{{order.shippingAddress.city}}, {{order.shippingAddress.state}} {{order.shippingAddress.zipCode}}</p>
+
+    <h3>Items</h3>
+    <div class="order-items">
+      <div *ngFor="let item of order.items" class="order-item">
+        <span>{{item.productName}} x {{item.quantity}}</span>
+        <span>\${{item.price * item.quantity | number:'1.2-2'}}</span>
+      </div>
+    </div>
+  </mat-card>
+</div>

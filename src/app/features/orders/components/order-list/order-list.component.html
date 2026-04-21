@@ -1,0 +1,85 @@
+<div class="container orders-container">
+  <h1 class="page-title">My Orders</h1>
+
+  <div *ngIf="loading$ | async" class="loading-spinner">
+    <mat-spinner></mat-spinner>
+    <p>Loading orders...</p>
+  </div>
+
+  <div *ngIf="!(loading$ | async)">
+    <ng-container *ngIf="(orders$ | async) as orders">
+      <div *ngIf="orders.length === 0" class="no-orders">
+        <mat-icon>receipt_long</mat-icon>
+        <h2>No orders yet</h2>
+        <p>Start shopping to create your first order!</p>
+        <button mat-raised-button color="primary" routerLink="/shop">
+          <mat-icon>storefront</mat-icon>
+          Start Shopping
+        </button>
+      </div>
+
+      <div *ngIf="orders.length > 0" class="orders-list">
+        <mat-card *ngFor="let order of orders" class="order-card">
+          <div class="order-header">
+            <div class="order-info">
+              <h3>Order #{{order.orderNumber}}</h3>
+              <p class="order-date">Placed on {{order.createdAt | date:'medium'}}</p>
+            </div>
+            <mat-chip [color]="getStatusColor(order.status)">
+              <mat-icon>{{getStatusIcon(order.status)}}</mat-icon>
+              {{order.status}}
+            </mat-chip>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <div class="order-details">
+            <div class="order-items">
+              <h4>Items ({{order.items.length}})</h4>
+              <div class="item-list">
+                <div *ngFor="let item of order.items" class="order-item">
+                  <span>{{item.productName}} x {{item.quantity}}</span>
+                  <span>\${{item.price * item.quantity | number:'1.2-2'}}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="order-summary-info">
+              <div class="info-row">
+                <mat-icon>location_on</mat-icon>
+                <div>
+                  <strong>Shipping Address</strong>
+                  <p>{{order.shippingAddress.fullName}}</p>
+                  <p>{{order.shippingAddress.addressLine1}}</p>
+                  <p *ngIf="order.shippingAddress.addressLine2">{{order.shippingAddress.addressLine2}}</p>
+                  <p>{{order.shippingAddress.city}}, {{order.shippingAddress.state}} {{order.shippingAddress.zipCode}}</p>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <mat-icon>local_shipping</mat-icon>
+                <div>
+                  <strong>Tracking ID</strong>
+                  <p>{{order.trackingId}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <div class="order-footer">
+            <div class="order-total">
+              <span>Total:</span>
+              <span class="total-amount">\${{order.totalAmount | number:'1.2-2'}}</span>
+            </div>
+            <button mat-raised-button color="primary" (click)="viewOrderDetails(order.id)">
+              <mat-icon>visibility</mat-icon>
+              View Details
+            </button>
+          </div>
+        </mat-card>
+      </div>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+<mat-toolbar color="primary" class="navbar">
+  <div class="container navbar-content">
+    <div class="navbar-brand" routerLink="/shop">
+      <mat-icon>cake</mat-icon>
+      <span class="brand-name">Delightful Dessert</span>
+    </div>
+
+    <button mat-icon-button class="menu-toggle" (click)="toggleMenu()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <nav class="navbar-menu" [class.menu-open]="isMenuOpen">
+      <button mat-button routerLink="/shop" routerLinkActive="active">
+        <mat-icon>store</mat-icon>
+        Shop
+      </button>
+
+      <ng-container *ngIf="currentUser$ | async as user; else guestMenu">
+        <button mat-button (click)="navigateToOrders()">
+          <mat-icon>receipt_long</mat-icon>
+          My Orders
+        </button>
+
+        <button mat-button (click)="navigateToCart()" class="cart-button">
+          <mat-icon [matBadge]="(cartItemCount$ | async) || 0" 
+                    [matBadgeHidden]="!(cartItemCount$ | async)"
+                    matBadgeColor="accent">
+            shopping_cart
+          </mat-icon>
+          Cart
+        </button>
+
+        <button mat-button *ngIf="authService.isAdmin()" (click)="navigateToAdmin()">
+          <mat-icon>dashboard</mat-icon>
+          Admin
+        </button>
+
+        <button mat-button [matMenuTriggerFor]="userMenu">
+          <mat-icon>account_circle</mat-icon>
+          {{ user.firstName }}
+        </button>
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item disabled>
+            <mat-icon>email</mat-icon>
+            <span>{{ user.email }}</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </ng-container>
+
+      <ng-template #guestMenu>
+        <button mat-button routerLink="/auth/login">
+          <mat-icon>login</mat-icon>
+          Login
+        </button>
+        <button mat-raised-button color="accent" routerLink="/auth/register">
+          Sign Up
+        </button>
+      </ng-template>
+    </nav>
+  </div>
+</mat-toolbar>

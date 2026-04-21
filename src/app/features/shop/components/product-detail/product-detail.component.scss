@@ -1,0 +1,164 @@
+.product-detail-container {
+  padding: 32px 16px;
+  max-width: 1200px;
+}
+
+.back-button {
+  margin-bottom: 24px;
+}
+
+.product-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+}
+
+.product-image-section {
+  .product-image {
+    width: 100%;
+    height: auto;
+    max-height: 600px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.product-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.product-name {
+  font-size: 36px;
+  margin: 0;
+  color: #333;
+}
+
+.product-category {
+  mat-chip-set {
+    mat-chip {
+      font-size: 14px;
+    }
+  }
+}
+
+.product-price {
+  .price {
+    font-size: 42px;
+    font-weight: 600;
+    color: #4caf50;
+  }
+}
+
+.product-description {
+  h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    color: #333;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #666;
+  }
+}
+
+.product-stock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .out-of-stock {
+    color: #f44336;
+    font-weight: 500;
+  }
+}
+
+.product-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+
+  button {
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+
+  .quantity {
+    padding: 0 24px;
+    font-size: 18px;
+    font-weight: 500;
+    min-width: 40px;
+    text-align: center;
+  }
+}
+
+.add-to-cart-button {
+  flex: 1;
+  height: 48px;
+  font-size: 16px;
+
+  mat-icon {
+    margin-right: 8px;
+  }
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 16px;
+
+  p {
+    color: #666;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .product-name {
+    font-size: 28px;
+  }
+
+  .product-price .price {
+    font-size: 32px;
+  }
+
+  .product-actions {
+    flex-direction: column;
+    align-items: stretch;
+
+    .quantity-selector {
+      justify-content: center;
+    }
+
+    .add-to-cart-button {
+      width: 100%;
+    }
+  }
+}

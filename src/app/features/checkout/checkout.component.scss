@@ -1,0 +1,168 @@
+.checkout-container {
+  padding: 32px 16px;
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 32px;
+  font-size: 32px;
+  color: #333;
+}
+
+.checkout-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.checkout-form {
+  mat-card {
+    padding: 24px;
+
+    h3 {
+      margin: 16px 0;
+      color: #333;
+    }
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 16px;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.card-element {
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 16px 0;
+  background-color: white;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 24px;
+
+  button {
+    flex: 1;
+    height: 48px;
+
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+.order-summary {
+  height: fit-content;
+  position: sticky;
+  top: 80px;
+
+  mat-card {
+    padding: 16px;
+  }
+
+  .summary-items {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+  }
+
+  .summary-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .item-info {
+      flex: 1;
+
+      h4 {
+        margin: 0 0 4px 0;
+        font-size: 14px;
+        color: #333;
+      }
+
+      p {
+        margin: 0;
+        font-size: 12px;
+        color: #666;
+      }
+    }
+
+    .item-price {
+      font-weight: 500;
+      color: #333;
+    }
+  }
+
+  .summary-totals {
+    margin-top: 16px;
+  }
+
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 16px;
+    color: #666;
+
+    &.total {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 2px solid #eee;
+
+      .total-amount {
+        color: #4caf50;
+        font-size: 24px;
+      }
+    }
+  }
+}
+
+@media (max-width: 968px) {
+  .checkout-content {
+    grid-template-columns: 1fr;
+  }
+
+  .order-summary {
+    position: static;
+    order: -1;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}

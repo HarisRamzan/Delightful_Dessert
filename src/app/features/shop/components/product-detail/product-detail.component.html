@@ -1,0 +1,65 @@
+<div class="container product-detail-container">
+  <div *ngIf="loading" class="loading-spinner">
+    <mat-spinner></mat-spinner>
+    <p>Loading product...</p>
+  </div>
+
+  <div *ngIf="!loading && product" class="product-detail">
+    <button mat-button (click)="goBack()" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Shop
+    </button>
+
+    <div class="product-content">
+      <div class="product-image-section">
+        <img [src]="product.imageUrl" [alt]="product.name" class="product-image">
+      </div>
+
+      <div class="product-info-section">
+        <h1 class="product-name">{{product.name}}</h1>
+        
+        <div class="product-category">
+          <mat-chip-set>
+            <mat-chip>{{product.categoryName}}</mat-chip>
+            <mat-chip *ngIf="product.subcategoryName">{{product.subcategoryName}}</mat-chip>
+          </mat-chip-set>
+        </div>
+
+        <div class="product-price">
+          <span class="price">${{product.price | number:'1.2-2'}}</span>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="product-description">
+          <h3>Description</h3>
+          <p>{{product.description}}</p>
+        </div>
+
+        <div class="product-stock">
+          <mat-icon *ngIf="product.stock > 0" color="accent">check_circle</mat-icon>
+          <mat-icon *ngIf="product.stock === 0" color="warn">cancel</mat-icon>
+          <span *ngIf="product.stock > 0">{{product.stock}} items in stock</span>
+          <span *ngIf="product.stock === 0" class="out-of-stock">Out of Stock</span>
+        </div>
+
+        <div class="product-actions" *ngIf="product.stock > 0">
+          <div class="quantity-selector">
+            <button mat-icon-button (click)="decrementQuantity()" [disabled]="quantity === 1">
+              <mat-icon>remove</mat-icon>
+            </button>
+            <span class="quantity">{{quantity}}</span>
+            <button mat-icon-button (click)="incrementQuantity()" [disabled]="quantity >= product.stock">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+
+          <button mat-raised-button color="primary" (click)="onAddToCart()" class="add-to-cart-button">
+            <mat-icon>add_shopping_cart</mat-icon>
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,137 @@
+<div class="container checkout-container">
+  <h1 class="page-title">Checkout</h1>
+
+  <div class="checkout-content">
+    <div class="checkout-form">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Shipping Information</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <form [formGroup]="shippingForm" (ngSubmit)="onSubmit()">
+            <mat-form-field class="form-field-full-width" appearance="outline">
+              <mat-label>Full Name</mat-label>
+              <input matInput formControlName="fullName" placeholder="John Doe">
+              <mat-error *ngIf="shippingForm.get('fullName')?.hasError('required')">
+                Full name is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="form-field-full-width" appearance="outline">
+              <mat-label>Address Line 1</mat-label>
+              <input matInput formControlName="addressLine1" placeholder="123 Main St">
+              <mat-error *ngIf="shippingForm.get('addressLine1')?.hasError('required')">
+                Address is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="form-field-full-width" appearance="outline">
+              <mat-label>Address Line 2 (Optional)</mat-label>
+              <input matInput formControlName="addressLine2" placeholder="Apt, Suite, etc.">
+            </mat-form-field>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>City</mat-label>
+                <input matInput formControlName="city">
+                <mat-error *ngIf="shippingForm.get('city')?.hasError('required')">
+                  City is required
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>State</mat-label>
+                <input matInput formControlName="state" placeholder="CA">
+                <mat-error *ngIf="shippingForm.get('state')?.hasError('required')">
+                  State is required
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>ZIP Code</mat-label>
+                <input matInput formControlName="zipCode" placeholder="12345">
+                <mat-error *ngIf="shippingForm.get('zipCode')?.hasError('required')">
+                  ZIP code is required
+                </mat-error>
+                <mat-error *ngIf="shippingForm.get('zipCode')?.hasError('pattern')">
+                  Invalid ZIP code
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <mat-form-field class="form-field-full-width" appearance="outline">
+              <mat-label>Phone Number</mat-label>
+              <input matInput formControlName="phoneNumber" placeholder="1234567890">
+              <mat-error *ngIf="shippingForm.get('phoneNumber')?.hasError('required')">
+                Phone number is required
+              </mat-error>
+              <mat-error *ngIf="shippingForm.get('phoneNumber')?.hasError('pattern')">
+                Invalid phone number (10 digits)
+              </mat-error>
+            </mat-form-field>
+
+            <mat-divider class="my-3"></mat-divider>
+
+            <h3>Payment Information</h3>
+            <div id="card-element" class="card-element"></div>
+            <div *ngIf="error" class="error-message">{{ error }}</div>
+
+            <div class="form-actions">
+              <button mat-stroked-button type="button" (click)="goBack()" [disabled]="processing">
+                <mat-icon>arrow_back</mat-icon>
+                Back to Cart
+              </button>
+              <button mat-raised-button color="primary" type="submit" 
+                      [disabled]="!shippingForm.valid || processing">
+                <span *ngIf="!processing">
+                  <mat-icon>payment</mat-icon>
+                  Place Order
+                </span>
+                <mat-spinner *ngIf="processing" diameter="20"></mat-spinner>
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="order-summary">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Order Summary</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="summary-items">
+            <div *ngFor="let item of (cartItems$ | async)" class="summary-item">
+              <img [src]="item.product.imageUrl" [alt]="item.product.name">
+              <div class="item-info">
+                <h4>{{item.product.name}}</h4>
+                <p>Qty: {{item.quantity}}</p>
+              </div>
+              <span class="item-price">\${{item.price * item.quantity | number:'1.2-2'}}</span>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <div class="summary-totals">
+            <div class="total-row">
+              <span>Subtotal:</span>
+              <span>\${{(totalAmount$ | async) | number:'1.2-2'}}</span>
+            </div>
+            <div class="total-row">
+              <span>Shipping:</span>
+              <span>FREE</span>
+            </div>
+            <div class="total-row total">
+              <span>Total:</span>
+              <span class="total-amount">\${{(totalAmount$ | async) | number:'1.2-2'}}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

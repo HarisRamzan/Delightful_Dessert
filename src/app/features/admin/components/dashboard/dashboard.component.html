@@ -1,0 +1,86 @@
+<div class="container admin-dashboard">
+  <h1 class="page-title">Admin Dashboard</h1>
+
+  <div *ngIf="loading" class="loading-spinner">
+    <mat-spinner></mat-spinner>
+    <p>Loading dashboard...</p>
+  </div>
+
+  <div *ngIf="!loading" class="dashboard-content">
+    <div class="stats-grid">
+      <mat-card class="stat-card revenue">
+        <mat-icon>attach_money</mat-icon>
+        <div class="stat-info">
+          <h2>\${{stats.totalRevenue | number:'1.2-2'}}</h2>
+          <p>Total Revenue</p>
+        </div>
+      </mat-card>
+
+      <mat-card class="stat-card orders">
+        <mat-icon>shopping_bag</mat-icon>
+        <div class="stat-info">
+          <h2>{{stats.totalOrders}}</h2>
+          <p>Total Orders</p>
+        </div>
+      </mat-card>
+
+      <mat-card class="stat-card products">
+        <mat-icon>inventory_2</mat-icon>
+        <div class="stat-info">
+          <h2>{{stats.totalProducts}}</h2>
+          <p>Products</p>
+        </div>
+      </mat-card>
+
+      <mat-card class="stat-card users">
+        <mat-icon>people</mat-icon>
+        <div class="stat-info">
+          <h2>{{stats.totalUsers}}</h2>
+          <p>Registered Users</p>
+        </div>
+      </mat-card>
+    </div>
+
+    <div class="alerts-section">
+      <mat-card class="alert-card" *ngIf="stats.pendingOrders > 0">
+        <mat-icon color="warn">warning</mat-icon>
+        <div class="alert-content">
+          <h3>Pending Orders</h3>
+          <p>You have {{stats.pendingOrders}} pending orders that need attention</p>
+          <button mat-raised-button color="primary" routerLink="/admin/orders">View Orders</button>
+        </div>
+      </mat-card>
+
+      <mat-card class="alert-card" *ngIf="stats.lowStockProducts > 0">
+        <mat-icon color="accent">inventory</mat-icon>
+        <div class="alert-content">
+          <h3>Low Stock Alert</h3>
+          <p>{{stats.lowStockProducts}} products are running low on stock</p>
+          <button mat-raised-button color="primary" routerLink="/admin/products">Manage Products</button>
+        </div>
+      </mat-card>
+    </div>
+
+    <div class="quick-actions">
+      <h2>Quick Actions</h2>
+      <div class="actions-grid">
+        <button mat-raised-button color="primary" routerLink="/admin/products">
+          <mat-icon>add</mat-icon>
+          Add Product
+        </button>
+        <button mat-raised-button color="primary" routerLink="/admin/categories">
+          <mat-icon>category</mat-icon>
+          Manage Categories
+        </button>
+        <button mat-raised-button color="primary" routerLink="/admin/orders">
+          <mat-icon>list_alt</mat-icon>
+          View Orders
+        </button>
+        <button mat-raised-button color="primary" routerLink="/admin/users">
+          <mat-icon>group</mat-icon>
+          Manage Users
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
