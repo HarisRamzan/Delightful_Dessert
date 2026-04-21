@@ -26,6 +26,15 @@ export interface AuthResponse {
   user: User;
 }
 
+export interface GoogleAuthResponse {
+  success: boolean;
+  message: string;
+  data: {
+    token: string;
+    refreshToken: string;
+  };
+}
+
 export interface Product {
   id: string;
   name: string;

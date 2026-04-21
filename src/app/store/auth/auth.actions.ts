@@ -43,3 +43,9 @@ export const googleAuth = createAction(
 export const logout = createAction('[Auth] Logout');
 
 export const logoutSuccess = createAction('[Auth] Logout Success');
+
+// Initialize from storage
+export const initializeAuth = createAction(
+  '[Auth] Initialize from Storage',
+  props<{ user: User | null; token: string | null }>()
+);

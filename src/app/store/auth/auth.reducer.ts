@@ -61,5 +61,14 @@ export const authReducer = createReducer(
   on(AuthActions.logout, state => ({
     ...initialState
   })),
-  on(AuthActions.logoutSuccess, state => initialState)
+  on(AuthActions.logoutSuccess, state => initialState),
+
+  // Initialize from storage
+  on(AuthActions.initializeAuth, (state, { user, token }) => ({
+    ...state,
+    user,
+    token,
+    loading: false,
+    error: null
+  }))
 );

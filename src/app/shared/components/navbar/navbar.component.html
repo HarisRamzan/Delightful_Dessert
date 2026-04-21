@@ -30,7 +30,7 @@
           Cart
         </button>
 
-        <button mat-button *ngIf="authService.isAdmin()" (click)="navigateToAdmin()">
+        <button mat-button *ngIf="isAdmin$ | async" (click)="navigateToAdmin()">
           <mat-icon>dashboard</mat-icon>
           Admin
         </button>

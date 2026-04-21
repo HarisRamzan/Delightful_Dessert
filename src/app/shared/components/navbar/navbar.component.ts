@@ -4,7 +4,9 @@ import { AuthService } from '../../../core/services/auth.service';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectCartItemCount } from '../../../store/cart/cart.selectors';
+import { selectUser, selectIsAdmin } from '../../../store/auth/auth.selectors';
 import { User } from '../../../core/models';
+import * as AuthActions from '../../../store/auth/auth.actions';
 
 @Component({
   selector: 'app-navbar',
@@ -13,6 +15,7 @@ import { User } from '../../../core/models';
 })
 export class NavbarComponent implements OnInit {
   currentUser$: Observable<User | null>;
+  isAdmin$: Observable<boolean>;
   cartItemCount$: Observable<number>;
   isMenuOpen = false;
 
@@ -21,14 +24,15 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     private store: Store
   ) {
-    this.currentUser$ = this.authService.currentUser$;
+    this.currentUser$ = this.store.select(selectUser);
+    this.isAdmin$ = this.store.select(selectIsAdmin);
     this.cartItemCount$ = this.store.select(selectCartItemCount);
   }
 
   ngOnInit(): void {}
 
   logout(): void {
-    this.authService.logout();
+    this.store.dispatch(AuthActions.logout());
   }
 
   toggleMenu(): void {
