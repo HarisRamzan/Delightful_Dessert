@@ -22,12 +22,16 @@
         <div class="cart-items">
           <mat-card *ngFor="let item of items" class="cart-item">
             <div class="item-content">
-              <img [src]="item.product.imageUrl" [alt]="item.product.name" class="item-image">
+              <img [src]="item.productImage || 'assets/images/placeholder.jpg'" [alt]="item.productName" class="item-image">
               
               <div class="item-details">
-                <h3>{{item.product.name}}</h3>
-                <p>{{item.product.categoryName}}</p>
-                <p class="item-price">\${{item.price | number:'1.2-2'}} each</p>
+                <h3>{{item.productName}}</h3>
+                <p class="item-price" *ngIf="!item.discountPrice">${{item.price | number:'1.2-2'}} each</p>
+                <div *ngIf="item.discountPrice" class="price-section">
+                  <p class="item-price original-price">${{item.price | number:'1.2-2'}}</p>
+                  <p class="item-price discount-price">${{item.discountPrice | number:'1.2-2'}} each</p>
+                </div>
+                <p class="stock-info" *ngIf="item.availableStock < 5">Only {{item.availableStock}} left in stock</p>
               </div>
 
               <div class="item-actions">
@@ -36,12 +40,12 @@
                     <mat-icon>remove</mat-icon>
                   </button>
                   <span class="quantity">{{item.quantity}}</span>
-                  <button mat-icon-button (click)="updateQuantity(item, 1)" [disabled]="item.quantity >= item.product.stock">
+                  <button mat-icon-button (click)="updateQuantity(item, 1)" [disabled]="item.quantity >= item.availableStock">
                     <mat-icon>add</mat-icon>
                   </button>
                 </div>
 
-                <p class="item-total">\${{item.price * item.quantity | number:'1.2-2'}}</p>
+                <p class="item-total">${{item.subtotal | number:'1.2-2'}}</p>
 
                 <button mat-icon-button color="warn" (click)="removeItem(item.id)" matTooltip="Remove item">
                   <mat-icon>delete</mat-icon>
@@ -57,7 +61,7 @@
           <div class="summary-details">
             <div class="summary-row">
               <span>Subtotal ({{items.length}} items):</span>
-              <span>\${{(totalAmount$ | async) | number:'1.2-2'}}</span>
+              <span>${{(totalAmount$ | async) | number:'1.2-2'}}</span>
             </div>
             <div class="summary-row">
               <span>Shipping:</span>
@@ -72,7 +76,7 @@
             
             <div class="summary-row total">
               <span>Total:</span>
-              <span class="total-amount">\${{(totalAmount$ | async) | number:'1.2-2'}}</span>
+              <span class="total-amount">${{(totalAmount$ | async) | number:'1.2-2'}}</span>
             </div>
           </div>
 

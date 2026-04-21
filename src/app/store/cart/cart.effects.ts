@@ -16,8 +16,8 @@ export class CartEffects {
         this.apiService.getCart().pipe(
           map(response => 
             CartActions.loadCartSuccess({ 
-              items: response.items || [], 
-              totalAmount: response.totalAmount || 0 
+              items: response.data?.items || [], 
+              totalAmount: response.data?.totalAmount || 0 
             })
           ),
           catchError(error => of(CartActions.loadCartFailure({ error })))
@@ -33,9 +33,13 @@ export class CartEffects {
         this.apiService.addToCart(action.productId, action.quantity).pipe(
           map(response => {
             this.snackBar.open('Item added to cart!', 'Close', { duration: 3000 });
-            return CartActions.addToCartSuccess({ item: response });
+            // Reload cart to get updated state from backend
+            return CartActions.loadCart();
           }),
-          catchError(error => of(CartActions.addToCartFailure({ error })))
+          catchError(error => {
+            this.snackBar.open('Failed to add item to cart', 'Close', { duration: 3000 });
+            return of(CartActions.addToCartFailure({ error }));
+          })
         )
       )
     )
@@ -46,7 +50,10 @@ export class CartEffects {
       ofType(CartActions.updateCartItem),
       exhaustMap(action =>
         this.apiService.updateCartItem(action.itemId, action.quantity).pipe(
-          map(() => CartActions.updateCartItemSuccess({ itemId: action.itemId, quantity: action.quantity })),
+          map(() => {
+            // Reload cart to get updated state from backend
+            return CartActions.loadCart();
+          }),
           catchError(error => of(CartActions.updateCartItemFailure({ error })))
         )
       )
@@ -60,7 +67,8 @@ export class CartEffects {
         this.apiService.removeFromCart(action.itemId).pipe(
           map(() => {
             this.snackBar.open('Item removed from cart', 'Close', { duration: 3000 });
-            return CartActions.removeFromCartSuccess({ itemId: action.itemId });
+            // Reload cart to get updated state from backend
+            return CartActions.loadCart();
           }),
           catchError(error => of(CartActions.removeFromCartFailure({ error })))
         )

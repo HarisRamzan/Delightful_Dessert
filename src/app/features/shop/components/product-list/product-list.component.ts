@@ -15,8 +15,8 @@ export class ProductListComponent implements OnInit {
   loading = false;
   
   // Filters
-  selectedCategory: string = '';
-  selectedSubcategory: string = '';
+  selectedCategory: number | null = null;
+  selectedSubcategory: number | null = null;
   searchQuery: string = '';
   minPrice: number = 0;
   maxPrice: number = 1000;
@@ -63,7 +63,7 @@ export class ProductListComponent implements OnInit {
 
     this.apiService.getProducts(params).subscribe({
       next: (response) => {
-        this.products = Array.isArray(response.items) ? response.items : [];
+        this.products = Array.isArray(response.data) ? response.data : [];
         this.totalPages = response.totalPages || 1;
         this.totalCount = response.totalCount || 0;
         this.loading = false;
@@ -74,6 +74,7 @@ export class ProductListComponent implements OnInit {
         this.loading = false;
       }
     });
+    console.log('products:', this.products);    
   }
 
   onAddToCart(product: Product): void {
@@ -81,7 +82,7 @@ export class ProductListComponent implements OnInit {
   }
 
   onCategoryChange(): void {
-    this.selectedSubcategory = '';
+    this.selectedSubcategory = null;
     this.pageNumber = 1;
     this.loadProducts();
   }
@@ -103,8 +104,8 @@ export class ProductListComponent implements OnInit {
   }
 
   clearFilters(): void {
-    this.selectedCategory = '';
-    this.selectedSubcategory = '';
+    this.selectedCategory = null;
+    this.selectedSubcategory = null;
     this.searchQuery = '';
     this.minPrice = 0;
     this.maxPrice = 1000;

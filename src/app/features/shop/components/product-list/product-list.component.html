@@ -13,7 +13,7 @@
       <mat-form-field appearance="outline">
         <mat-label>Category</mat-label>
         <mat-select [(ngModel)]="selectedCategory" (selectionChange)="onCategoryChange()">
-          <mat-option value="">All Categories</mat-option>
+          <mat-option [value]="null">All Categories</mat-option>
           <mat-option *ngFor="let category of categories" [value]="category.id">
             {{category.name}}
           </mat-option>
@@ -23,7 +23,7 @@
       <mat-form-field appearance="outline" *ngIf="(selectedCategoryData?.subcategories?.length ?? 0) > 0">
         <mat-label>Subcategory</mat-label>
         <mat-select [(ngModel)]="selectedSubcategory" (selectionChange)="onSubcategoryChange()">
-          <mat-option value="">All Subcategories</mat-option>
+          <mat-option [value]="null">All Subcategories</mat-option>
           <mat-option *ngFor="let sub of selectedCategoryData?.subcategories" [value]="sub.id">
             {{sub.name}}
           </mat-option>

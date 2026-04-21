@@ -26,7 +26,7 @@ export class ProductManagementComponent implements OnInit {
     this.loading = true;
     this.apiService.getProducts().subscribe({
       next: (response) => {
-        this.products = response.items;
+        this.products = response.data;
         this.loading = false;
       },
       error: (error) => {
@@ -36,7 +36,7 @@ export class ProductManagementComponent implements OnInit {
     });
   }
 
-  deleteProduct(id: string): void {
+  deleteProduct(id: number): void {
     if (confirm('Are you sure you want to delete this product?')) {
       this.apiService.deleteProduct(id).subscribe({
         next: () => {

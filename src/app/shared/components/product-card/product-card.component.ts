@@ -19,4 +19,14 @@ export class ProductCardComponent {
   onViewDetails(): void {
     this.viewDetails.emit(this.product);
   }
+
+  getProductImage(): string {
+    if (this.product.imageUrl) {
+      return this.product.imageUrl;
+    }
+    if (this.product.images && this.product.images.length > 0) {
+      return this.product.images[0];
+    }
+    return 'assets/images/placeholder.jpg';
+  }
 }

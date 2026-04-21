@@ -31,12 +31,12 @@ export class CartComponent implements OnInit {
 
   updateQuantity(item: CartItem, change: number): void {
     const newQuantity = item.quantity + change;
-    if (newQuantity > 0 && newQuantity <= item.product.stock) {
+    if (newQuantity > 0 && newQuantity <= item.availableStock) {
       this.store.dispatch(CartActions.updateCartItem({ itemId: item.id, quantity: newQuantity }));
     }
   }
 
-  removeItem(itemId: string): void {
+  removeItem(itemId: number): void {
     this.store.dispatch(CartActions.removeFromCart({ itemId }));
   }
 

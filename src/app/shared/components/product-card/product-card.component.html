@@ -2,7 +2,7 @@
   <div class="product-image-container" (click)="onViewDetails()">
     <img 
       mat-card-image 
-      [src]="product.imageUrl || 'assets/images/placeholder.jpg'" 
+      [src]="getProductImage()" 
       [alt]="product.name"
       class="product-image"
     />
@@ -18,7 +18,7 @@
     <h3 class="product-name" (click)="onViewDetails()">{{ product.name }}</h3>
     <p class="product-category" *ngIf="product.categoryName">
       {{ product.categoryName }}
-      <span *ngIf="product.subcategoryName"> > {{ product.subcategoryName }}</span>
+      <span *ngIf="product.subCategoryName"> > {{ product.subCategoryName }}</span>
     </p>
     <p class="product-description">{{ product.description | slice:0:80 }}{{ product.description && product.description.length > 80 ? '...' : '' }}</p>
     

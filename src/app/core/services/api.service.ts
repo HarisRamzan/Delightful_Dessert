@@ -9,7 +9,8 @@ import {
   Order, 
   User,
   ApiResponse,
-  PaginatedResponse 
+  PaginatedResponse,
+  CartResponse
 } from '../models';
 
 @Injectable({
@@ -33,7 +34,7 @@ export class ApiService {
     return this.http.get<PaginatedResponse<Product>>(`${this.apiUrl}/products`, { params: httpParams });
   }
 
-  getProduct(id: string): Observable<Product> {
+  getProduct(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.apiUrl}/products/${id}`);
   }
 
@@ -41,11 +42,11 @@ export class ApiService {
     return this.http.post<Product>(`${this.apiUrl}/products`, product);
   }
 
-  updateProduct(id: string, product: Partial<Product>): Observable<Product> {
+  updateProduct(id: number, product: Partial<Product>): Observable<Product> {
     return this.http.put<Product>(`${this.apiUrl}/products/${id}`, product);
   }
 
-  deleteProduct(id: string): Observable<void> {
+  deleteProduct(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/products/${id}`);
   }
 
@@ -54,7 +55,7 @@ export class ApiService {
     return this.http.get<Category[]>(`${this.apiUrl}/categories`);
   }
 
-  getCategory(id: string): Observable<Category> {
+  getCategory(id: number): Observable<Category> {
     return this.http.get<Category>(`${this.apiUrl}/categories/${id}`);
   }
 
@@ -62,16 +63,16 @@ export class ApiService {
     return this.http.post<Category>(`${this.apiUrl}/categories`, category);
   }
 
-  updateCategory(id: string, category: Partial<Category>): Observable<Category> {
+  updateCategory(id: number, category: Partial<Category>): Observable<Category> {
     return this.http.put<Category>(`${this.apiUrl}/categories/${id}`, category);
   }
 
-  deleteCategory(id: string): Observable<void> {
+  deleteCategory(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/categories/${id}`);
   }
 
   // Subcategory endpoints
-  getSubcategories(categoryId?: string): Observable<Subcategory[]> {
+  getSubcategories(categoryId?: number): Observable<Subcategory[]> {
     const url = categoryId 
       ? `${this.apiUrl}/subcategories?categoryId=${categoryId}`
       : `${this.apiUrl}/subcategories`;
@@ -82,28 +83,28 @@ export class ApiService {
     return this.http.post<Subcategory>(`${this.apiUrl}/subcategories`, subcategory);
   }
 
-  updateSubcategory(id: string, subcategory: Partial<Subcategory>): Observable<Subcategory> {
+  updateSubcategory(id: number, subcategory: Partial<Subcategory>): Observable<Subcategory> {
     return this.http.put<Subcategory>(`${this.apiUrl}/subcategories/${id}`, subcategory);
   }
 
-  deleteSubcategory(id: string): Observable<void> {
+  deleteSubcategory(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/subcategories/${id}`);
   }
 
   // Cart endpoints
-  getCart(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/cart`);
+  getCart(): Observable<CartResponse> {
+    return this.http.get<CartResponse>(`${this.apiUrl}/cart`);
   }
 
-  addToCart(productId: string, quantity: number): Observable<any> {
+  addToCart(productId: number, quantity: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/cart/items`, { productId, quantity });
   }
 
-  updateCartItem(itemId: string, quantity: number): Observable<any> {
+  updateCartItem(itemId: number, quantity: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/cart/items/${itemId}`, { quantity });
   }
 
-  removeFromCart(itemId: string): Observable<void> {
+  removeFromCart(itemId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/cart/items/${itemId}`);
   }
 
@@ -134,6 +135,15 @@ export class ApiService {
 
   createOrder(orderData: any): Observable<Order> {
     return this.http.post<Order>(`${this.apiUrl}/orders`, orderData);
+  }
+
+  // Payment endpoints
+  createPaymentIntent(amount: number): Observable<{ clientSecret: string }> {
+    return this.http.post<{ clientSecret: string }>(`${this.apiUrl}/payments/create-intent-from-cart`, { amount });
+  }
+
+  confirmPayment(paymentIntentId: string, paymentMethodId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/payments/confirm`, { paymentIntentId, paymentMethodId });
   }
 
   updateOrderStatus(id: string, status: string): Observable<Order> {

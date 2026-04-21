@@ -36,22 +36,26 @@ export interface GoogleAuthResponse {
 }
 
 export interface Product {
-  id: string;
+  id: number;
   name: string;
   description: string;
   price: number;
-  imageUrl: string;
-  categoryId: string;
+  discountPrice?: number;
+  imageUrl?: string;
+  images?: string[];
+  sku?: string;
+  categoryId: number;
   categoryName?: string;
-  subcategoryId?: string;
-  subcategoryName?: string;
+  subCategoryId?: number;
+  subCategoryName?: string;
   stock: number;
   isActive: boolean;
+  viewCount?: number;
   createdAt: string;
 }
 
 export interface Category {
-  id: string;
+  id: number;
   name: string;
   description?: string;
   imageUrl?: string;
@@ -59,23 +63,34 @@ export interface Category {
 }
 
 export interface Subcategory {
-  id: string;
+  id: number;
   name: string;
-  categoryId: string;
+  categoryId: number;
   description?: string;
 }
 
 export interface CartItem {
-  id: string;
-  productId: string;
-  product: Product;
-  quantity: number;
+  id: number;
+  productId: number;
+  productName: string;
+  productImage: string;
   price: number;
+  discountPrice?: number;
+  quantity: number;
+  subtotal: number;
+  availableStock: number;
 }
 
 export interface Cart {
+  id: number;
+  userId: number;
   items: CartItem[];
   totalAmount: number;
+}
+
+export interface CartResponse {
+  success: boolean;
+  data: Cart;
 }
 
 export interface Order {
@@ -94,8 +109,8 @@ export interface Order {
 }
 
 export interface OrderItem {
-  id: string;
-  productId: string;
+  id: number;
+  productId: number;
   productName: string;
   quantity: number;
   price: number;
@@ -128,9 +143,11 @@ export interface ApiResponse<T> {
 }
 
 export interface PaginatedResponse<T> {
-  items: T[];
+  success: boolean;
+  data: T[];
   pageNumber: number;
-  pageSize: number;
   totalPages: number;
   totalCount: number;
+  hasPreviousPage?: boolean;
+  hasNextPage?: boolean;
 }
